@@ -1,0 +1,121 @@
+{
+  "vendors": {
+    "coinopai": {
+      "id": "coinopai",
+      "name": "CoinOpAI",
+      "description": "Crypto intelligence API — Kronos signals, trade decisions, image generation. Paid per call via x402 USDC micropayments on Base.",
+      "website": "https://x402.coinopai.com",
+      "categories": ["crypto", "trading", "ai", "signals", "intelligence", "image-generation"],
+      "trust_score": 10,
+      "affiliate_system": "x402_pyrimid",
+      "affiliate_config": {
+        "vendor_id": "0x034604e25078e293d7b181fa23b3f2f6",
+        "pyrimid_router": "0xc949AEa380D7b7984806143ddbfE519B03ABd68B",
+        "usdc_address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "network": "base",
+        "affiliate_id_env": "PYRIMID_AFFILIATE_ID",
+        "commission_bps": 2000
+      },
+      "products": [
+        {
+          "id": "kronos_signals",
+          "name": "Kronos Signals",
+          "description": "Live directional signals for BTC, ETH, SOL, XRP, ADA from the Kronos model. Positive = bullish, negative = bearish.",
+          "endpoint": "https://x402.coinopai.com/api/kronos/signals",
+          "method": "GET",
+          "price_usd": 0.05,
+          "pyrimid_product_id": 1,
+          "affiliate_eligible": true,
+          "params": {}
+        },
+        {
+          "id": "kronos_decision",
+          "name": "Kronos Decision",
+          "description": "Probabilistic trade decision — CONSIDER_LONG/SHORT/NO_ACTION with confidence and decision_id for auditing.",
+          "endpoint": "https://x402.coinopai.com/api/kronos/decision",
+          "method": "GET",
+          "price_usd": 0.15,
+          "pyrimid_product_id": 2,
+          "affiliate_eligible": true,
+          "params": {
+            "symbol": { "type": "string", "required": true, "description": "BTC, ETH, SOL, XRP, or ADA" }
+          }
+        },
+        {
+          "id": "kronos_preflight",
+          "name": "Trade Preflight",
+          "description": "Gate check before trading — market state, cooldown, regime, signal strength.",
+          "endpoint": "https://x402.coinopai.com/api/kronos/preflight",
+          "method": "GET",
+          "price_usd": 0.05,
+          "pyrimid_product_id": null,
+          "affiliate_eligible": false,
+          "params": {
+            "symbol": { "type": "string", "required": true, "description": "BTC, ETH, SOL, XRP, or ADA" }
+          }
+        },
+        {
+          "id": "kronos_audit",
+          "name": "Trade Audit",
+          "description": "Verify a past trade decision against real prices. Returns verdict: GOOD_DECISION, BAD_DIRECTION, or NOISE.",
+          "endpoint": "https://x402.coinopai.com/api/kronos/audit",
+          "method": "GET",
+          "price_usd": 0.07,
+          "pyrimid_product_id": null,
+          "affiliate_eligible": false,
+          "params": {
+            "decision_id": { "type": "string", "required": true },
+            "window": { "type": "string", "description": "1h, 4h, or 24h" }
+          }
+        },
+        {
+          "id": "imagegen",
+          "name": "Image Generation",
+          "description": "AI image generation from text prompt. Returns a PNG URL. $0.10/image.",
+          "endpoint": "https://imagegen.coinopai.com/generate",
+          "method": "GET",
+          "price_usd": 0.10,
+          "pyrimid_product_id": 3,
+          "affiliate_eligible": true,
+          "params": {
+            "prompt": { "type": "string", "required": true, "description": "Image description" },
+            "aspect": { "type": "string", "description": "1:1, 16:9, 9:16, or 4:3" }
+          }
+        }
+      ]
+    },
+
+    "gumroad": {
+      "id": "gumroad",
+      "name": "Gumroad",
+      "description": "Digital product marketplace — courses, tools, templates, ebooks sold by independent creators.",
+      "website": "https://gumroad.com",
+      "categories": ["digital-products", "education", "tools", "templates", "ebooks"],
+      "trust_score": 8,
+      "affiliate_system": "query_param_link",
+      "affiliate_config": {
+        "tracking_param": "affiliate",
+        "affiliate_id_env": "GUMROAD_AFFILIATE_ID",
+        "commission_pct": 30,
+        "commission_note": "Commission set per-product by the creator — 30% is typical but varies"
+      },
+      "products": []
+    },
+
+    "partnerstack": {
+      "id": "partnerstack",
+      "name": "PartnerStack Programs",
+      "description": "SaaS affiliate programs via PartnerStack — tools like Notion, Webflow, Monday.com, and hundreds of others.",
+      "website": "https://app.partnerstack.com",
+      "categories": ["saas", "productivity", "tools", "software"],
+      "trust_score": 7,
+      "affiliate_system": "referral_link",
+      "affiliate_config": {
+        "referral_code_env": "PARTNERSTACK_CODE",
+        "commission_pct": null,
+        "commission_note": "Varies by program — typically 20-30% recurring for SaaS"
+      },
+      "products": []
+    }
+  }
+}
