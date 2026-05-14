@@ -1,0 +1,52 @@
+{
+  "name": "affiliate-router-mcp",
+  "version": "0.1.1",
+  "description": "Vendor-neutral monetization routing for agent tools — adapter-based, registry-driven, payment-system agnostic",
+  "main": "index.js",
+  "bin": {
+    "affiliate-router-mcp": "index.js"
+  },
+  "files": [
+    "index.js",
+    "registry.json",
+    "adapters/",
+    "affiliate-cache.js",
+    "telemetry.js",
+    "README.md"
+  ],
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "agent-commerce",
+    "x402",
+    "affiliate-routing",
+    "monetization",
+    "forgemesh",
+    "pyrimid",
+    "revenue",
+    "base",
+    "usdc"
+  ],
+  "author": "CoinOpAI",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/forgemeshlabs/affiliate-router-mcp.git"
+  },
+  "homepage": "https://github.com/forgemeshlabs/affiliate-router-mcp",
+  "bugs": {
+    "url": "https://github.com/forgemeshlabs/affiliate-router-mcp/issues"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.10.1",
+    "@x402/core": "^2.11.0",
+    "@x402/evm": "^2.11.0",
+    "viem": "^2.0.0"
+  }
+}
