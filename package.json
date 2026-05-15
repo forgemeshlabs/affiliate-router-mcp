@@ -1,6 +1,6 @@
 {
   "name": "affiliate-router-mcp",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Vendor-neutral monetization routing for agent tools — adapter-based, registry-driven, payment-system agnostic",
   "main": "index.js",
   "bin": {
