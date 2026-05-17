@@ -3,10 +3,12 @@
 Vendor-neutral monetization routing for agent tools. One MCP server that discovers,
 routes, and attributes revenue across paid APIs, referral links, and affiliate programs.
 
+**Source:** https://github.com/forgemeshlabs/affiliate-router-mcp
+
 The router is not tied to any single payment network or affiliate system.
 Adapters are pluggable. The registry is a local JSON file you control.
 
-**Status:** experimental · v0.1.0
+**Status:** experimental · v0.1.4
 
 > **Disclaimer:** This MCP does not guarantee payouts. It routes attribution data
 > according to each vendor/program's rules. Commission distribution is enforced by
@@ -202,7 +204,7 @@ All `call_affiliate_product` calls append to `logs/affiliate-telemetry.jsonl`:
 
 ---
 
-## Part of the [ForgeMesh](https://github.com/forgemeshlabs/forgemesh) Ecosystem
+## Part of the ForgeMesh Ecosystem
 
 Infrastructure for monetized agent ecosystems.
 
@@ -210,7 +212,7 @@ Infrastructure for monetized agent ecosystems.
 |---------|------|---------|
 | **affiliate-router-mcp** | Vendor-neutral monetization routing (this package) | `npm i affiliate-router-mcp` |
 | [coinopai-mcp](https://github.com/forgemeshlabs/coinopai-mcp) | Paid crypto intelligence via x402 | `npm i coinopai-mcp` |
-| [coinopai-imagegen](https://github.com/forgemeshlabs/coinopai-imagegen) | Paid image generation service | — |
+| [coinopai-imagegen](https://github.com/forgemeshlabs/coinopai-imagegen) | Paid image generation service | `npm i coinopai-imagegen` |
 
 Each package works standalone. No shared dependency required.
 
