@@ -1,0 +1,29 @@
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    required:
+      - walletPrivateKey
+    properties:
+      walletPrivateKey:
+        type: string
+        description: >-
+          Dedicated low-balance Base wallet private key for x402 USDC payments.
+          Use a purpose-built wallet, not your primary wallet.
+      pyrimidAffiliateId:
+        type: string
+        description: >-
+          Your Pyrimid affiliate wallet address (optional). Enables on-chain
+          commission splits when routing through Pyrimid-registered vendors.
+  commandFunction: |-
+    (config) => ({
+      command: 'npx',
+      args: ['-y', 'affiliate-router-mcp'],
+      env: {
+        WALLET_PRIVATE_KEY: config.walletPrivateKey,
+        ...(config.pyrimidAffiliateId ? { PYRIMID_AFFILIATE_ID: config.pyrimidAffiliateId } : {})
+      }
+    })
+  exampleConfig:
+    walletPrivateKey: '0x...'
+    pyrimidAffiliateId: '0x...'

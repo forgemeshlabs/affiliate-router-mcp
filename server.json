@@ -1,0 +1,36 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.forgemeshlabs/affiliate-router-mcp",
+  "description": "Vendor-neutral monetization routing for agent tools. Adapter-based, registry-driven, payment-system agnostic. Routes x402 USDC micropayments, Pyrimid affiliate splits, and referral links.",
+  "repository": {
+    "url": "https://github.com/forgemeshlabs/affiliate-router-mcp",
+    "source": "github"
+  },
+  "version": "0.1.4",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "affiliate-router-mcp",
+      "version": "0.1.4",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "WALLET_PRIVATE_KEY",
+          "description": "Dedicated low-balance Base wallet private key for x402 USDC micropayments. Do not use your primary wallet.",
+          "isRequired": true,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "PYRIMID_AFFILIATE_ID",
+          "description": "Your Pyrimid affiliate wallet address for on-chain commission splits (optional).",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}
