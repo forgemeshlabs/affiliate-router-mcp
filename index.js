@@ -375,7 +375,7 @@ function handleGetTelemetry({ limit = 20, vendor_id, affiliate_id }) {
 
 async function main() {
   const server = new Server(
-    { name: "affiliate-router-mcp", version: "0.1.0" },
+    { name: "affiliate-router-mcp", version: "0.1.6" },
     { capabilities: { tools: {} } }
   );
 
