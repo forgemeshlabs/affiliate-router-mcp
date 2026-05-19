@@ -8,7 +8,7 @@ routes, and attributes revenue across paid APIs, referral links, and affiliate p
 The router is not tied to any single payment network or affiliate system.
 Adapters are pluggable. The registry is a local JSON file you control.
 
-**Status:** experimental · v0.1.4
+**Status:** experimental · v0.1.6
 
 > **Disclaimer:** This MCP does not guarantee payouts. It routes attribution data
 > according to each vendor/program's rules. Commission distribution is enforced by
@@ -98,11 +98,13 @@ Or with Claude Code / any MCP client:
 
 ---
 
-## Included Vendors (v0.1.0)
+## Included Vendors
 
 **CoinOpAI** (`x402_pyrimid`) — crypto intelligence API on Base mainnet
 - Kronos Signals — $0.05/call, 20% commission
 - Kronos Decision — $0.15/call, 20% commission
+- Trade Preflight — $0.05/call, 20% commission
+- Trade Audit — $0.07/call, 20% commission
 - Image Generation — $0.10/call, 20% commission
 
 **Gumroad** (`referral_link`) — digital product marketplace, ~30% commission per product
@@ -212,7 +214,7 @@ Infrastructure for monetized agent ecosystems.
 |---------|------|---------|
 | **affiliate-router-mcp** | Vendor-neutral monetization routing (this package) | `npm i affiliate-router-mcp` |
 | [coinopai-mcp](https://github.com/forgemeshlabs/coinopai-mcp) | Paid crypto intelligence via x402 | `npm i coinopai-mcp` |
-| [coinopai-imagegen](https://github.com/forgemeshlabs/coinopai-imagegen) | Paid image generation service | `npm i coinopai-imagegen` |
+| [forgemesh-imagegen](https://github.com/forgemeshlabs/imagegen-mcp) | Paid image generation MCP | `npm i forgemesh-imagegen` |
 
 Each package works standalone. No shared dependency required.
 

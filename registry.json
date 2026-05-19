@@ -48,8 +48,8 @@
           "endpoint": "https://x402.coinopai.com/api/kronos/preflight",
           "method": "GET",
           "price_usd": 0.05,
-          "pyrimid_product_id": null,
-          "affiliate_eligible": false,
+          "pyrimid_product_id": 4,
+          "affiliate_eligible": true,
           "params": {
             "symbol": { "type": "string", "required": true, "description": "BTC, ETH, SOL, XRP, or ADA" }
           }
@@ -61,8 +61,8 @@
           "endpoint": "https://x402.coinopai.com/api/kronos/audit",
           "method": "GET",
           "price_usd": 0.07,
-          "pyrimid_product_id": null,
-          "affiliate_eligible": false,
+          "pyrimid_product_id": 5,
+          "affiliate_eligible": true,
           "params": {
             "decision_id": { "type": "string", "required": true },
             "window": { "type": "string", "description": "1h, 4h, or 24h" }
