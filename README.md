@@ -1,5 +1,7 @@
 # affiliate-router-mcp
 
+[![M8ven Verified](https://m8ven.ai/badge/mcp/forgemeshlabs-affiliate-router-mcp-1pkb5d?variant=verified)](https://m8ven.ai/mcp/forgemeshlabs-affiliate-router-mcp-1pkb5d)
+
 Vendor-neutral monetization routing for agent tools. One MCP server that discovers,
 routes, and attributes revenue across paid APIs, referral links, and affiliate programs.
 
