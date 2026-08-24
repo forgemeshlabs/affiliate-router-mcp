@@ -56,6 +56,7 @@ function commissionEst(priceUsd, bps) { return bps ? (priceUsd * bps / 10000) : 
 const TOOLS = [
   {
     name: "search_opportunities",
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     description: "Search affiliate opportunities by keyword or category. Returns matching vendors and products with commission info. Free — no payment required.",
     inputSchema: {
       type: "object",
@@ -67,11 +68,13 @@ const TOOLS = [
   },
   {
     name: "list_affiliate_programs",
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     description: "List all registered affiliate programs with commission rates, affiliate system type, and status. Free.",
     inputSchema: { type: "object", properties: {} }
   },
   {
     name: "get_opportunity_details",
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     description: "Get full details for a vendor and optionally a specific product — endpoint, pricing, commission, params. Free.",
     inputSchema: {
       type: "object",
@@ -84,6 +87,7 @@ const TOOLS = [
   },
   {
     name: "get_best_route",
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     description: "Given a natural language intent, find the best matching affiliate opportunity ranked by relevance, trust, and commission. Free.",
     inputSchema: {
       type: "object",
@@ -95,6 +99,7 @@ const TOOLS = [
   },
   {
     name: "generate_affiliate_link",
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     description: "Generate a tracked affiliate link for a referral-link or query-param-link vendor. No payment required.",
     inputSchema: {
       type: "object",
@@ -108,6 +113,7 @@ const TOOLS = [
   },
   {
     name: "call_affiliate_product",
+    annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true },
     description: "Call a paid x402 API product with automatic affiliate attribution. Handles full payment (USDC on Base). Pyrimid affiliate routing used when eligible; falls back to direct x402 if affiliate_id is invalid. Costs USDC per call — amount shown in get_opportunity_details.",
     inputSchema: {
       type: "object",
@@ -125,6 +131,7 @@ const TOOLS = [
   },
   {
     name: "estimate_commission",
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     description: "Estimate affiliate commission for a product based on known rates. Returns per-call and monthly estimates. Free.",
     inputSchema: {
       type: "object",
@@ -138,6 +145,7 @@ const TOOLS = [
   },
   {
     name: "get_affiliate_telemetry",
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: false, openWorldHint: false },
     description: "Read local affiliate telemetry log — timestamps, vendors, products, amounts, affiliate IDs, statuses. Free.",
     inputSchema: {
       type: "object",
