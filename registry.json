@@ -116,6 +116,53 @@
         "commission_note": "Varies by program — typically 20-30% recurring for SaaS"
       },
       "products": []
+    },
+
+    "golemreach": {
+      "id": "golemreach",
+      "name": "Golemreach",
+      "description": "Agent-infrastructure APIs from the team running an agent MMO and a production MCP/heartbeat fleet. Per-call USDC pricing on Base via standard x402 (EIP-3009); no account or API key needed - an x402 client answers the 402 challenge automatically. Referrer/attribution surface: https://golemreach.com/trust",
+      "website": "https://golemreach.com",
+      "categories": ["ai", "monitoring", "mcp", "observability", "image-generation", "api"],
+      "trust_score": 7,
+      "affiliate_system": "x402_direct",
+      "affiliate_config": {
+        "usdc_address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "network": "base",
+        "commission_note": "No affiliate split yet (vendor receives 100% via x402_direct). Referring agents may tag traffic with ?src=<tag>; attribution surface is golemreach.com/trust."
+      },
+      "products": [
+        {
+          "id": "agentmeter_probe_series",
+          "name": "MCP Endpoint Probe Series (hourly)",
+          "description": "Hourly outside-in measurement series over ~14k registered MCP endpoints: reachability, full MCP handshake success + latency p50/p95, TLS validity and certificate-expiry debt, observed auth modes, tool-manifest drift events. One JSON call; $0.01 per call via x402. Filters: ?last=24 (recent N hours) or ?from=...&to=... (inclusive UTC hour range).",
+          "endpoint": "https://golemreach.com/agentmeter/api/probe-series.json",
+          "method": "GET",
+          "price_usd": 0.01,
+          "affiliate_eligible": false,
+          "params": {
+            "last": { "type": "integer", "required": false, "description": "Return only the most recent N hourly buckets" },
+            "from": { "type": "string", "required": false, "description": "Inclusive UTC hour lower bound, e.g. 2026-08-26T00" },
+            "to": { "type": "string", "required": false, "description": "Inclusive UTC hour upper bound" }
+          }
+        },
+        {
+          "id": "agentmeter_og_render",
+          "name": "Attribution-free OG Image Render",
+          "description": "Open Graph social-card render per HTTP call with the corner attribution removed. Deterministic template engine, PNG returned inline, X-Agentmeter-Receipt header for verifiable proof-of-payment. $0.01 per call via x402 or 1 prepaid credit.",
+          "endpoint": "https://golemreach.com/agentmeter/api/og/render.png",
+          "method": "GET",
+          "price_usd": 0.01,
+          "affiliate_eligible": false,
+          "params": {
+            "title": { "type": "string", "required": true, "description": "Card title text" },
+            "subtitle": { "type": "string", "required": false, "description": "Card subtitle text" },
+            "theme": { "type": "string", "required": false, "description": "Template theme, see https://golemreach.com/og/" },
+            "accent": { "type": "string", "required": false, "description": "Accent color" },
+            "badge": { "type": "string", "required": false, "description": "Corner badge text" }
+          }
+        }
+      ]
     }
   }
 }
