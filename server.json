@@ -6,12 +6,12 @@
     "url": "https://github.com/forgemeshlabs/affiliate-router-mcp",
     "source": "github"
   },
-  "version": "0.1.6",
+  "version": "0.1.8",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "affiliate-router-mcp",
-      "version": "0.1.6",
+      "version": "0.1.8",
       "transport": {
         "type": "stdio"
       },
@@ -30,6 +30,15 @@
           "isSecret": false,
           "format": "string"
         }
+      ]
+    }
+  ],
+  "icons": [
+    {
+      "src": "https://forgemesh.io/favicon.png",
+      "mimeType": "image/png",
+      "sizes": [
+        "1254x1254"
       ]
     }
   ]
