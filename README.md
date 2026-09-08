@@ -10,7 +10,7 @@ routes, and attributes revenue across paid APIs, referral links, and affiliate p
 The router is not tied to any single payment network or affiliate system.
 Adapters are pluggable. The registry is a local JSON file you control.
 
-**Status:** experimental · v0.1.6
+**Status:** experimental · v0.1.9
 
 > **Disclaimer:** This MCP does not guarantee payouts. It routes attribution data
 > according to each vendor/program's rules. Commission distribution is enforced by
@@ -55,7 +55,8 @@ affect existing adapters.
 |---------|-------------|---------|--------|
 | `x402_pyrimid` | Approve USDC → `routePayment` on-chain → retry with tx hash | On-chain USDC split | **Tested** |
 | `x402_direct` | EIP-3009 `transferWithAuthorization` via Coinbase facilitator | On-chain USDC to vendor | Implemented |
-| `referral_link` | Inject affiliate param into URL | None — program-dependent | Implemented |
+| `referral_link` / `query_param_link` | Inject affiliate param into URL; supports `optional_params` (e.g. a VIN) and a `fixed_link` mode for pre-tracked URLs that must not be mutated | None — program-dependent | Implemented |
+| `awin_link` | Wraps a product's `destination_url` behind Awin's `cread.php` redirect with the vendor's `awinmid`/`awinaffid` | None — program-dependent | Implemented |
 
 **Pyrimid is the first fully tested paid affiliate adapter.** It is not the only
 supported model. Future adapters may include: PartnerStack, Rewardful, Impact,
@@ -111,7 +112,19 @@ Or with Claude Code / any MCP client:
 
 **Gumroad** (`referral_link`) — digital product marketplace, ~30% commission per product
 
-**PartnerStack** (`referral_link`) — SaaS affiliate programs stub (add your own products)
+**PartnerStack** (`referral_link`) — SaaS affiliate programs
+- ElevenLabs — AI voice/TTS, 22% of payments for 12 months (`fixed_link`, no extra params)
+
+**Ledger** (`referral_link`, `fixed_link`) — hardware wallets, 10% commission
+- Nano X, Nano S Plus, Stax — per-product deep links with tracking baked in
+
+**DigitalOcean** (`awin_link`) — cloud hosting, 10% recurring commission for 12 months, 30-day cookie
+- Homepage, Droplets pricing — wrapped behind Awin's `cread.php`
+
+**Amazon Influencer Storefront** (`referral_link`, `fixed_link`) — ai_tinkers storefront, standard Associates rates, no per-product tagging
+
+**ForgeMesh Vehicle History Reports** (`referral_link`) — tracked forgemesh.io/go/ redirects, 25% per sale
+- EpicVIN, Detailed Vehicle History — pass `extra_params: {vin: "..."}` to `generate_affiliate_link` to prefill the VIN
 
 ---
 

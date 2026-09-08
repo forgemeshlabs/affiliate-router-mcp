@@ -1,6 +1,6 @@
 {
   "name": "affiliate-router-mcp",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "mcpName": "io.github.forgemeshlabs/affiliate-router-mcp",
   "description": "Vendor-neutral monetization routing for agent tools \u2014 adapter-based, registry-driven, payment-system agnostic",
   "main": "index.js",
@@ -16,7 +16,8 @@
     "README.md"
   ],
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "node --test"
   },
   "engines": {
     "node": ">=18"
