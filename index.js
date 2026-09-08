@@ -49,6 +49,16 @@ function resolveAffiliateId(vendor, toolArgAffiliate) {
 }
 
 function commissionFromBps(bps) { return bps ? (bps / 100).toFixed(1) + "%" : null; }
+// Human label for a vendor's commission: bps → "20.0%", else pct → "25%", else "varies".
+// (Previously an operator-precedence bug rendered "undefined%"/"null%".)
+function commissionLabel(cfg) {
+  if (!cfg) return "varies";
+  const fromBps = commissionFromBps(cfg.commission_bps);
+  if (fromBps) return fromBps;
+  if (cfg.commission_pct != null && cfg.commission_pct !== "") return cfg.commission_pct + "%";
+  if (cfg.commission_note) return String(cfg.commission_note);
+  return "varies";
+}
 function commissionEst(priceUsd, bps) { return bps ? (priceUsd * bps / 10000) : null; }
 
 // ── Tool definitions ──────────────────────────────────────────────────────────
@@ -184,7 +194,7 @@ function handleSearchOpportunities({ query, category }) {
       vendor_id: vendor.id,
       vendor_name: vendor.name,
       affiliate_system: vendor.affiliate_system,
-      commission: commissionFromBps(vendor.affiliate_config?.commission_bps) || vendor.affiliate_config?.commission_pct + "%" || "varies",
+      commission: commissionLabel(vendor.affiliate_config),
       trust_score: vendor.trust_score,
       matched_products: matchedProducts.map(p => ({
         product_id: p.id,
@@ -204,7 +214,7 @@ function handleListPrograms() {
       vendor_id: v.id,
       name: v.name,
       affiliate_system: v.affiliate_system,
-      commission: commissionFromBps(v.affiliate_config?.commission_bps) || v.affiliate_config?.commission_pct ? v.affiliate_config.commission_pct + "%" : "varies",
+      commission: commissionLabel(v.affiliate_config),
       commission_note: v.affiliate_config?.commission_note || null,
       trust_score: v.trust_score,
       product_count: (v.products || []).length,
