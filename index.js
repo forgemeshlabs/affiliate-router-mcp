@@ -100,13 +100,17 @@ const TOOLS = [
   {
     name: "generate_affiliate_link",
     annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
-    description: "Generate a tracked affiliate link for a referral-link or query-param-link vendor. No payment required.",
+    description: "Generate a tracked affiliate link for a referral-link, query-param-link, or Awin-wrapped vendor. No payment required.",
     inputSchema: {
       type: "object",
       properties: {
         vendor_id: { type: "string", description: "Vendor ID (must be a link-based affiliate, not x402)" },
         product_id: { type: "string", description: "Product ID within the vendor" },
-        affiliate_id: { type: "string", description: "Override affiliate ID (env var used if omitted)" }
+        affiliate_id: { type: "string", description: "Override affiliate ID (env var used if omitted)" },
+        extra_params: {
+          type: "object",
+          description: "Optional per-link template values, e.g. {vin: '1HGCM82633A004352'} to prefill a VIN on vehicle-history report links. Vendor/product-specific — see get_opportunity_details for supported keys."
+        }
       },
       required: ["vendor_id", "product_id"]
     }
@@ -268,7 +272,7 @@ function handleGetBestRoute({ intent }) {
   return { intent, top_results: results, total_matched: scored.length };
 }
 
-function handleGenerateLink({ vendor_id, product_id, affiliate_id }) {
+function handleGenerateLink({ vendor_id, product_id, affiliate_id, extra_params }) {
   const { vendor, product } = findProduct(vendor_id, product_id);
   const system = vendor.affiliate_system;
 
@@ -277,7 +281,11 @@ function handleGenerateLink({ vendor_id, product_id, affiliate_id }) {
   }
 
   const affId = resolveAffiliateId(vendor, affiliate_id);
-  return linkAdapter.generateLink(product, vendor.affiliate_config, affId);
+  // Forward the vendor-level affiliate_system alongside affiliate_config —
+  // the adapter routes on affiliateConfig.affiliate_system, and it doesn't
+  // otherwise have access to the vendor object.
+  const configWithSystem = { ...vendor.affiliate_config, affiliate_system: vendor.affiliate_system };
+  return linkAdapter.generateLink(product, configWithSystem, affId, extra_params);
 }
 
 async function handleCallProduct({ vendor_id, product_id, params, affiliate_id }) {
@@ -332,6 +340,23 @@ async function handleCallProduct({ vendor_id, product_id, params, affiliate_id }
 
 function handleEstimateCommission({ vendor_id, product_id, calls_per_month = 100 }) {
   const { vendor, product } = findProduct(vendor_id, product_id);
+
+  // Per-sale programs (referral/link-based vendors) carry commission info on
+  // the product itself — these are one-time conversions, not per-call API
+  // pricing, so calls_per_month does not apply.
+  const productCommission = product.commission;
+  if (productCommission && productCommission.type === "per_sale") {
+    return {
+      vendor_id, product_id,
+      commission_type: "per_sale",
+      commission_pct: productCommission.pct ?? null,
+      note: productCommission.note || "Paid per conversion — amount varies by sale.",
+      calls_per_month_note:
+        "This is a per-sale affiliate program, not a per-call API — calls_per_month does not apply. " +
+        "Estimate against expected conversions (sales/signups), not traffic or call volume.",
+    };
+  }
+
   const bps = vendor.affiliate_config?.commission_bps;
   const pct = vendor.affiliate_config?.commission_pct;
 
@@ -347,6 +372,7 @@ function handleEstimateCommission({ vendor_id, product_id, calls_per_month = 100
     const per_call = product.price_usd * bps / 10000;
     return {
       vendor_id, product_id,
+      commission_type: "per_call",
       commission_pct: bps / 100,
       per_call_usd: per_call,
       monthly_estimate_usd: per_call * calls_per_month,
@@ -357,6 +383,7 @@ function handleEstimateCommission({ vendor_id, product_id, calls_per_month = 100
 
   return {
     vendor_id, product_id,
+    commission_type: "per_sale",
     commission_pct: pct,
     note: vendor.affiliate_config?.commission_note || "Paid per conversion — amount varies by product.",
   };
@@ -383,7 +410,7 @@ function handleGetTelemetry({ limit = 20, vendor_id, affiliate_id }) {
 
 async function main() {
   const server = new Server(
-    { name: "affiliate-router-mcp", version: "0.1.6" },
+    { name: "affiliate-router-mcp", version: "0.1.9" },
     { capabilities: { tools: {} } }
   );
 

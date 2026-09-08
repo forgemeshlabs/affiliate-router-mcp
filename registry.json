@@ -105,17 +105,169 @@
     "partnerstack": {
       "id": "partnerstack",
       "name": "PartnerStack Programs",
-      "description": "SaaS affiliate programs via PartnerStack — tools like Notion, Webflow, Monday.com, and hundreds of others.",
+      "description": "SaaS affiliate programs via PartnerStack — tools like Notion, Webflow, Monday.com, ElevenLabs, and hundreds of others.",
       "website": "https://app.partnerstack.com",
-      "categories": ["saas", "productivity", "tools", "software"],
+      "categories": ["saas", "productivity", "tools", "software", "ai", "text-to-speech", "voice", "audio"],
       "trust_score": 7,
       "affiliate_system": "referral_link",
       "affiliate_config": {
         "referral_code_env": "PARTNERSTACK_CODE",
         "commission_pct": null,
-        "commission_note": "Varies by program — typically 20-30% recurring for SaaS"
+        "commission_note": "Varies by program — typically 20-30% recurring for SaaS",
+        "disclosure": "Affiliate link; funds free tools at forgemesh.io; same price for you."
       },
-      "products": []
+      "products": [
+        {
+          "id": "elevenlabs",
+          "name": "ElevenLabs",
+          "description": "AI voice generation and text-to-speech platform. Complete PartnerStack tracked link — no additional URL params needed.",
+          "landing_url": "https://try.elevenlabs.io/4c1hgz625jps",
+          "fixed_link": true,
+          "affiliate_eligible": true,
+          "commission": { "type": "per_sale", "pct": 22, "note": "22% of payments for 12 months" }
+        }
+      ]
+    },
+
+    "ledger": {
+      "id": "ledger",
+      "name": "Ledger",
+      "description": "Hardware wallets for crypto self-custody — Nano X, Nano S Plus, Stax.",
+      "website": "https://shop.ledger.com/",
+      "categories": ["crypto", "hardware-wallet", "security", "self-custody"],
+      "trust_score": 8,
+      "affiliate_system": "referral_link",
+      "affiliate_config": {
+        "commission_pct": 10,
+        "commission_note": "10% commission; account validates after 2 orders + €50 balance, then pays",
+        "disclosure": "Affiliate link; funds free tools at forgemesh.io; same price for you."
+      },
+      "products": [
+        {
+          "id": "nano-x",
+          "name": "Ledger Nano X",
+          "description": "Bluetooth-enabled hardware wallet for crypto self-custody.",
+          "landing_url": "https://shop.ledger.com/products/ledger-nano-x?r=08dfd680cf63",
+          "fixed_link": true,
+          "affiliate_eligible": true,
+          "commission": { "type": "per_sale", "pct": 10, "note": "10% commission" }
+        },
+        {
+          "id": "nano-s-plus",
+          "name": "Ledger Nano S Plus",
+          "description": "Entry-level USB hardware wallet for crypto self-custody.",
+          "landing_url": "https://shop.ledger.com/products/ledger-nano-s-plus?r=08dfd680cf63",
+          "fixed_link": true,
+          "affiliate_eligible": true,
+          "commission": { "type": "per_sale", "pct": 10, "note": "10% commission" }
+        },
+        {
+          "id": "stax",
+          "name": "Ledger Stax",
+          "description": "Touchscreen hardware wallet for crypto self-custody.",
+          "landing_url": "https://shop.ledger.com/products/ledger-stax?r=08dfd680cf63",
+          "fixed_link": true,
+          "affiliate_eligible": true,
+          "commission": { "type": "per_sale", "pct": 10, "note": "10% commission" }
+        }
+      ]
+    },
+
+    "digitalocean": {
+      "id": "digitalocean",
+      "name": "DigitalOcean",
+      "description": "Cloud hosting and infrastructure — Droplets (VPS), managed databases, App Platform. Awin affiliate program.",
+      "website": "https://www.digitalocean.com/",
+      "categories": ["hosting", "vps", "cloud", "developer-tools"],
+      "trust_score": 9,
+      "affiliate_system": "awin_link",
+      "affiliate_config": {
+        "awinmid": "123996",
+        "awinaffid": "3055837",
+        "commission_pct": 10,
+        "commission_note": "10% recurring commission for 12 months on qualifying signups, 30-day cookie",
+        "disclosure": "Affiliate link; funds free tools at forgemesh.io; same price for you."
+      },
+      "products": [
+        {
+          "id": "homepage",
+          "name": "DigitalOcean Homepage",
+          "description": "General DigitalOcean signup link — cloud hosting, VPS droplets, managed databases, and App Platform.",
+          "landing_url": "https://www.digitalocean.com/",
+          "destination_url": "https://www.digitalocean.com/",
+          "affiliate_eligible": true,
+          "commission": { "type": "per_sale", "pct": 10, "note": "10% recurring commission for 12 months on qualifying signups, 30-day cookie" }
+        },
+        {
+          "id": "pricing_droplets",
+          "name": "DigitalOcean Droplets Pricing",
+          "description": "Droplets (VPS) pricing page — direct link for developers comparing compute plans.",
+          "landing_url": "https://www.digitalocean.com/pricing/droplets",
+          "destination_url": "https://www.digitalocean.com/pricing/droplets",
+          "affiliate_eligible": true,
+          "commission": { "type": "per_sale", "pct": 10, "note": "10% recurring commission for 12 months on qualifying signups, 30-day cookie" }
+        }
+      ]
+    },
+
+    "amazon-influencer-storefront": {
+      "id": "amazon-influencer-storefront",
+      "name": "Amazon Influencer Storefront",
+      "description": "ai_tinkers Amazon storefront — hardware, homelab, and gear picks. Standard Associates rates apply; no per-product affiliate tagging is available.",
+      "website": "https://www.amazon.com/shop/ai_tinkers",
+      "categories": ["hardware", "homelab", "gear"],
+      "trust_score": 7,
+      "affiliate_system": "referral_link",
+      "affiliate_config": {
+        "commission_pct": null,
+        "commission_note": "Standard Amazon Associates rates, varies by product category; no per-product tagging available",
+        "disclosure": "Affiliate link; funds free tools at forgemesh.io; same price for you. Standard Amazon Associates commission — no per-product tagging available."
+      },
+      "products": [
+        {
+          "id": "storefront",
+          "name": "ai_tinkers Amazon Storefront",
+          "description": "Curated hardware, homelab, and gear picks. Standard Amazon Associates rates apply storefront-wide — no per-product tagging is available for individual items.",
+          "landing_url": "https://www.amazon.com/shop/ai_tinkers",
+          "fixed_link": true,
+          "affiliate_eligible": true,
+          "commission": { "type": "per_sale", "pct": null, "note": "Standard Amazon Associates rates, varies by category; storefront-wide link, no per-product tagging" }
+        }
+      ]
+    },
+
+    "forgemesh-vehicle-reports": {
+      "id": "forgemesh-vehicle-reports",
+      "name": "ForgeMesh Vehicle History Reports",
+      "description": "Tracked forgemesh.io/go/ redirects to paid vehicle history report partners. Free basic VIN report at https://forgemesh.io/vin; these paid partner reports add title brands, accidents, and odometer history.",
+      "website": "https://forgemesh.io/vin",
+      "categories": ["automotive", "vehicle-history", "vin", "car-buying"],
+      "trust_score": 9,
+      "affiliate_system": "referral_link",
+      "affiliate_config": {
+        "commission_note": "Per-sale commission, varies by partner — see individual products",
+        "disclosure": "Affiliate link; funds free tools at forgemesh.io; same price for you."
+      },
+      "products": [
+        {
+          "id": "epicvin_history_report",
+          "name": "EpicVIN Vehicle History Report",
+          "description": "Full vehicle history report from EpicVIN — title brands, accidents, odometer readings. Free basic report at https://forgemesh.io/vin; this paid partner report adds full history detail. Pass vin in extra_params to prefill the VIN.",
+          "landing_url": "https://forgemesh.io/go/epicvin",
+          "optional_params": { "vin": "vin" },
+          "affiliate_eligible": true,
+          "commission": { "type": "per_sale", "pct": 25, "note": "25% per report sale" }
+        },
+        {
+          "id": "dvh_history_report",
+          "name": "Detailed Vehicle History Report",
+          "description": "Full vehicle history report from Detailed Vehicle History — title brands, accidents, odometer readings; 90-day cookie; 10% coupon (AFF10) pre-applied. Free basic report at https://forgemesh.io/vin; this paid partner report adds full history detail. Pass vin in extra_params to prefill the VIN.",
+          "landing_url": "https://forgemesh.io/go/dvh",
+          "optional_params": { "vin": "vin" },
+          "affiliate_eligible": true,
+          "commission": { "type": "per_sale", "pct": 25, "note": "25% per sale, 90-day cookie, 10% coupon (AFF10) pre-applied" }
+        }
+      ]
     }
   }
 }
