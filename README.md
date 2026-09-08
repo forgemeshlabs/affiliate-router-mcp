@@ -10,7 +10,7 @@ routes, and attributes revenue across paid APIs, referral links, and affiliate p
 The router is not tied to any single payment network or affiliate system.
 Adapters are pluggable. The registry is a local JSON file you control.
 
-**Status:** experimental · v0.1.9
+**Status:** experimental · v0.1.10
 
 > **Disclaimer:** This MCP does not guarantee payouts. It routes attribution data
 > according to each vendor/program's rules. Commission distribution is enforced by

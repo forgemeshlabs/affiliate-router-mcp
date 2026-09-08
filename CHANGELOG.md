@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.10 — 2026-09-08
+- Fix: `list_affiliate_programs` / `search_opportunities` rendered `undefined%`/`null%` for vendors without `commission_bps` (operator-precedence bug). New `commissionLabel()` helper: bps → pct → note → "varies". Regression test added.
+
 ## 0.1.9
 
 - Registry: added 5 live vendors — `forgemesh-vehicle-reports` (EpicVIN + Detailed

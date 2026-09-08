@@ -140,3 +140,11 @@ test("generate_affiliate_link: still rejects x402 vendors (regression)", async (
   assert.ok(resp.result.isError);
   assert.match(resp.result.content[0].text, /x402 vendor/);
 });
+
+const { test: t2 } = require("node:test");
+const assert2 = require("node:assert");
+t2("commission labels never render undefined%/null%", async () => {
+  const src = require("fs").readFileSync(require("path").join(__dirname, "..", "index.js"), "utf8");
+  assert2.ok(src.includes("function commissionLabel("), "commissionLabel helper present");
+  assert2.ok(!/commission_pct \+ "%" \|\| "varies"/.test(src), "old precedence bug removed");
+});
