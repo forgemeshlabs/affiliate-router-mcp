@@ -61,10 +61,17 @@ test("tools/list includes generate_affiliate_link with an extra_params property"
   });
 
   const tools = resp.result.tools;
-  assert.equal(tools.length, 8, "tool count should remain 8 — no new tools added");
+  assert.equal(tools.length, 9, "tool count should be 9 (8 routing tools + free list_tools)");
   const genLink = tools.find(t => t.name === "generate_affiliate_link");
   assert.ok(genLink);
   assert.ok(genLink.inputSchema.properties.extra_params, "extra_params should be in the schema");
+});
+
+test("list_tools: free GET /menu passthrough lists router tools with prices", async () => {
+  const resp = await callTool("list_tools", {});
+  const menu = toolResult(resp);
+  assert.ok(Array.isArray(menu.tools) && menu.tools.length > 0, "menu should list tools");
+  assert.ok(menu.tools.every(t => typeof t.price_usd === "number"), "every tool carries a price");
 });
 
 test("generate_affiliate_link: epicvin with vin extra_param end-to-end", async () => {

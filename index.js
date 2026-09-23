@@ -12,6 +12,8 @@ const pyrimidAdapter = require("./adapters/x402-pyrimid");
 const directAdapter = require("./adapters/x402-direct");
 const linkAdapter = require("./adapters/referral-link");
 
+const ROUTER_BASE_URL = (process.env.X402_ROUTER_BASE_URL || "https://router.forgemesh.io").replace(/\/$/, "");
+
 // ── Registry helpers ──────────────────────────────────────────────────────────
 
 function allVendors() {
@@ -64,6 +66,12 @@ function commissionEst(priceUsd, bps) { return bps ? (priceUsd * bps / 10000) : 
 // ── Tool definitions ──────────────────────────────────────────────────────────
 
 const TOOLS = [
+  {
+    name: "list_tools",
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
+    description: "Free. Lists every x402 Router tool with its live price, so an agent can pick before paying. Fetches GET /menu from router.forgemesh.io with no payment.",
+    inputSchema: { type: "object", properties: {} }
+  },
   {
     name: "search_opportunities",
     annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
@@ -173,6 +181,14 @@ const TOOLS = [
 ];
 
 // ── Tool handlers ─────────────────────────────────────────────────────────────
+
+// list_tools is free: plain fetch of the router's /menu, no wallet, no adapter.
+// The server may attach a labeled `sponsored` data field; pass it through untouched.
+async function handleListTools() {
+  const res = await fetch(`${ROUTER_BASE_URL}/menu`);
+  if (!res.ok) throw new Error(`Failed to fetch menu: HTTP ${res.status}`);
+  return res.json();
+}
 
 function handleSearchOpportunities({ query, category }) {
   const kw = (query || "").toLowerCase().split(/\s+/).filter(Boolean);
@@ -420,7 +436,7 @@ function handleGetTelemetry({ limit = 20, vendor_id, affiliate_id }) {
 
 async function main() {
   const server = new Server(
-    { name: "affiliate-router-mcp", version: "0.1.9" },
+    { name: "affiliate-router-mcp", version: "0.1.11" },
     { capabilities: { tools: {} } }
   );
 
@@ -431,6 +447,7 @@ async function main() {
     try {
       let result;
       switch (name) {
+        case "list_tools":              result = await handleListTools(); break;
         case "search_opportunities":    result = handleSearchOpportunities(args); break;
         case "list_affiliate_programs": result = handleListPrograms(); break;
         case "get_opportunity_details": result = handleGetDetails(args); break;
