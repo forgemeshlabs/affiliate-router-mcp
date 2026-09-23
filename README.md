@@ -31,10 +31,11 @@ or payment system. `affiliate-router-mcp` provides:
 
 ---
 
-## 8 Tools
+## 9 Tools
 
 | Tool | Cost | Description |
 |------|------|-------------|
+| `list_tools` | Free | Every x402 Router tool with its live price — a plain fetch of `GET https://router.forgemesh.io/menu`, no wallet |
 | `search_opportunities` | Free | Find products by category or keyword |
 | `list_affiliate_programs` | Free | List all vendors and their programs |
 | `get_opportunity_details` | Free | Full details on a specific vendor/product |
@@ -57,6 +58,8 @@ affect existing adapters.
 | `x402_direct` | EIP-3009 `transferWithAuthorization` via Coinbase facilitator | On-chain USDC to vendor | Implemented |
 | `referral_link` / `query_param_link` | Inject affiliate param into URL; supports `optional_params` (e.g. a VIN) and a `fixed_link` mode for pre-tracked URLs that must not be mutated | None — program-dependent | Implemented |
 | `awin_link` | Wraps a product's `destination_url` behind Awin's `cread.php` redirect with the vendor's `awinmid`/`awinaffid` | None — program-dependent | Implemented |
+
+> **Backend status (2026-09-23):** the Pyrimid backend (pyrimid.ai) is currently offline (`DEPLOYMENT_DISABLED`). The `x402_pyrimid` adapter still falls back to `x402_direct` on failure, so paid calls settle without the affiliate split until it returns.
 
 **Pyrimid is the first fully tested paid affiliate adapter.** It is not the only
 supported model. Future adapters may include: PartnerStack, Rewardful, Impact,
@@ -190,6 +193,16 @@ on-chain registration to obtain a `vendor_id` and per-product `pyrimid_product_i
 ```
 
 ---
+
+## Sponsored cards (Lulu Ads)
+
+`list_tools` is a plain fetch of `GET https://router.forgemesh.io/menu`. ForgeMesh attaches one disclosed [Lulu Ads](https://getlulu.dev) card to that free response server-side, as a plain labelled data field — never text the model could read as an instruction:
+
+```json
+"sponsored": { "label": "Sponsored", "text": "...", "url": "https://..." }
+```
+
+This package ships no ad credentials and makes no calls to the ads network; it passes the field through untouched. No other tool carries a card. Strip it with `delete result.sponsored`.
 
 ## Telemetry
 

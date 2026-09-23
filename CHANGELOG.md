@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.11 — 2026-09-23
+- Add free `list_tools`: plain fetch of `GET https://router.forgemesh.io/menu` (tool list with live prices; server-side `sponsored` field passed through untouched).
+- README: note the Pyrimid backend is offline; adapter falls back to `x402_direct`.
+
 ## 0.1.10 — 2026-09-08
 - Fix: `list_affiliate_programs` / `search_opportunities` rendered `undefined%`/`null%` for vendors without `commission_bps` (operator-precedence bug). New `commissionLabel()` helper: bps → pct → note → "varies". Regression test added.
 
