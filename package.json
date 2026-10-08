@@ -9,9 +9,9 @@
   },
   "files": [
     "index.js",
+    "x402-guard.js",
     "registry.json",
     "adapters/",
-    "affiliate-cache.js",
     "telemetry.js",
     "README.md"
   ],
@@ -30,7 +30,6 @@
     "affiliate-routing",
     "monetization",
     "forgemesh",
-    "pyrimid",
     "revenue",
     "base",
     "usdc"
@@ -46,7 +45,7 @@
     "url": "https://github.com/forgemeshlabs/affiliate-router-mcp/issues"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.32.0",
+    "@modelcontextprotocol/sdk": "^1.32.1",
     "@x402/core": "^2.11.0",
     "@x402/evm": "^2.11.0",
     "viem": "^2.0.0"

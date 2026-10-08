@@ -111,16 +111,32 @@ test("estimate_commission: per-sale branch for a link-based vendor (ledger)", as
   assert.ok(!("per_call_usd" in result), "per-sale programs should not report a per_call_usd");
 });
 
-test("estimate_commission: per-call branch still works for x402 vendors (regression)", async () => {
+test("estimate_commission: x402 vendors have no attribution, so no commission is claimed", async () => {
   const resp = await callTool("estimate_commission", {
     vendor_id: "coinopai",
     product_id: "kronos_signals",
     calls_per_month: 200,
   });
   const result = toolResult(resp);
-  assert.equal(result.commission_type, "per_call");
-  assert.ok(Math.abs(result.per_call_usd - 0.01) < 1e-9);
-  assert.ok(Math.abs(result.monthly_estimate_usd - 2) < 1e-9);
+  assert.match(result.commission, /unknown/);
+  assert.ok(!("per_call_usd" in result));
+});
+
+test("call_affiliate_product: refuses to pay an origin outside the vendor allowlist", async () => {
+  const { call } = require("../adapters/x402-direct");
+  await assert.rejects(call({ endpoint: "https://evil.example/api/x", price_usd: 0.01 }, {}, "0x" + "11".repeat(32)), /not an allowlisted vendor origin/);
+});
+
+test("inputs are validated before any work: prototype keys, bad ids and oversized text are rejected", async () => {
+  for (const [tool, args] of [
+    ["get_opportunity_details", { vendor_id: "constructor" }],
+    ["get_opportunity_details", { vendor_id: "../etc" }],
+    ["get_best_route", { intent: "x".repeat(1001) }],
+    ["call_affiliate_product", { vendor_id: "coinopai", product_id: "kronos_decision", params: { symbol: { a: 1 } } }],
+  ]) {
+    const resp = await callTool(tool, args);
+    assert.ok(resp.result.isError, `${tool} ${JSON.stringify(args).slice(0, 40)} should be an error`);
+  }
 });
 
 test("estimate_commission: per-sale branch handles a null product-level pct (amazon storefront)", async () => {

@@ -32,10 +32,6 @@ Environment variables schema:
       "description": "Gumroad tracking ID",
       "type": "string"
     },
-    "PYRIMID_AFFILIATE_ID": {
-      "description": "Default affiliate ID for Pyrimid-registered products",
-      "type": "string"
-    },
     "WALLET_PRIVATE_KEY": {
       "description": "Base wallet private key for x402 adapters",
       "type": "string"

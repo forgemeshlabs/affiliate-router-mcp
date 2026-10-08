@@ -6,7 +6,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 
-COPY index.js registry.json affiliate-cache.js telemetry.js README.md glama.json ./
+COPY index.js registry.json x402-guard.js telemetry.js README.md glama.json ./
 COPY adapters ./adapters
 
 USER node

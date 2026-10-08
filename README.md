@@ -10,7 +10,7 @@ routes, and attributes revenue across paid APIs, referral links, and affiliate p
 The router is not tied to any single payment network or affiliate system.
 Adapters are pluggable. The registry is a local JSON file you control.
 
-**Status:** experimental · v0.1.10
+**Status:** experimental · v0.1.12
 
 > **Disclaimer:** This MCP does not guarantee payouts. It routes attribution data
 > according to each vendor/program's rules. Commission distribution is enforced by
@@ -54,15 +54,11 @@ affect existing adapters.
 
 | Adapter | How it works | Payment | Status |
 |---------|-------------|---------|--------|
-| `x402_pyrimid` | Approve USDC → `routePayment` on-chain → retry with tx hash | On-chain USDC split | **Tested** |
-| `x402_direct` | EIP-3009 `transferWithAuthorization` via Coinbase facilitator | On-chain USDC to vendor | Implemented |
+| `x402_direct` | EIP-3009 `transferWithAuthorization` via Coinbase facilitator | On-chain USDC to vendor | **Tested** |
 | `referral_link` / `query_param_link` | Inject affiliate param into URL; supports `optional_params` (e.g. a VIN) and a `fixed_link` mode for pre-tracked URLs that must not be mutated | None — program-dependent | Implemented |
 | `awin_link` | Wraps a product's `destination_url` behind Awin's `cread.php` redirect with the vendor's `awinmid`/`awinaffid` | None — program-dependent | Implemented |
 
-> **Backend status (2026-09-23):** the Pyrimid backend (pyrimid.ai) is currently offline (`DEPLOYMENT_DISABLED`). The `x402_pyrimid` adapter still falls back to `x402_direct` on failure, so paid calls settle without the affiliate split until it returns.
-
-**Pyrimid is the first fully tested paid affiliate adapter.** It is not the only
-supported model. Future adapters may include: PartnerStack, Rewardful, Impact,
+The router is not tied to any single payment network or affiliate system. Future adapters may include: PartnerStack, Rewardful, Impact,
 Commission Junction, coupon/promo code injection, API-key partner programs, and
 other emerging agent commerce protocols.
 
@@ -83,7 +79,6 @@ Or with Claude Code / any MCP client:
       "command": "affiliate-router-mcp",
       "env": {
         "WALLET_PRIVATE_KEY": "0x...",
-        "PYRIMID_AFFILIATE_ID": "af_your_id",
         "GUMROAD_AFFILIATE_ID": "your-gumroad-id"
       }
     }
@@ -93,12 +88,18 @@ Or with Claude Code / any MCP client:
 
 ---
 
+## Requirements
+
+- Node.js 18 or newer and, for paid calls, a dedicated low-balance Base wallet (`WALLET_PRIVATE_KEY`). Free tools need no wallet.
+- Spending caps: `call_affiliate_product` only pays the CoinOpAI origins listed in `adapters/x402-direct.js` and refuses to sign for any other payee, any network except Base mainnet, any asset except USDC, or any amount above the built-in per-call caps ($0.15 and $0.10) and $10 per-session budget. The environment variables `X402_MAX_PRICE_USD` and `X402_SESSION_BUDGET_USD` can only lower those caps, never raise them. Use a dedicated, low-balance wallet.
+
 ## Environment Variables
 
 | Variable | Required | Notes |
 |----------|----------|-------|
 | `WALLET_PRIVATE_KEY` | For `call_affiliate_product` with x402 adapters | Base wallet with USDC + ETH for gas |
-| `PYRIMID_AFFILIATE_ID` | No | Default affiliate ID for Pyrimid-registered products |
+| `X402_MAX_PRICE_USD` | No | Lowers the per-call payment cap (never raises it) |
+| `X402_SESSION_BUDGET_USD` | No | Lowers the per-session payment budget (never raises it) |
 | `GUMROAD_AFFILIATE_ID` | No | Gumroad tracking ID |
 | `PARTNERSTACK_CODE` | No | PartnerStack referral code |
 
@@ -106,12 +107,12 @@ Or with Claude Code / any MCP client:
 
 ## Included Vendors
 
-**CoinOpAI** (`x402_pyrimid`) — crypto intelligence API on Base mainnet
-- Kronos Signals — $0.05/call, 20% commission
-- Kronos Decision — $0.15/call, 20% commission
-- Trade Preflight — $0.05/call, 20% commission
-- Trade Audit — $0.07/call, 20% commission
-- Image Generation — $0.10/call, 20% commission
+**CoinOpAI** (`x402_direct`) — crypto intelligence API on Base mainnet
+- Kronos Signals — $0.05/call
+- Kronos Decision — $0.15/call
+- Trade Preflight — $0.05/call
+- Trade Audit — $0.07/call
+- Image Generation — $0.10/call
 
 **Gumroad** (`referral_link`) — digital product marketplace, ~30% commission per product
 
@@ -134,17 +135,10 @@ Or with Claude Code / any MCP client:
 ## Routing Logic
 
 ```
-call_affiliate_product(vendor_id, product_id, params, affiliate_id?)
-    ↓
-resolve affiliate_id: tool arg → env var → null
+call_affiliate_product(vendor_id, product_id, params)
     ↓
 adapter = vendor.affiliate_system
     ↓
-x402_pyrimid + affiliate_id present?
-  cache VALID   → Pyrimid split flow (affiliate earns commission)
-  cache INVALID → x402_direct fallback (vendor gets 100%)
-  cache UNKNOWN → try Pyrimid → cache result → fallback on failure
-
 x402_direct → EIP-3009 payment, no affiliate split
 referral_link → inject tracking param, no payment
 ```
@@ -165,7 +159,6 @@ These are independent concerns.
 - Registering new vendor endpoints
 - Changing prices or commission rates
 - Enabling affiliate eligibility on a product
-- Assigning network-specific product IDs (e.g. Pyrimid product IDs)
 
 Adding a vendor to `registry.json` does not require a package release.
 Releasing a new package version does not require products to be re-registered.
@@ -175,8 +168,7 @@ Releasing a new package version does not require products to be re-registered.
 ## Adding a Vendor
 
 Edit `registry.json`. No code changes needed for referral-link vendors.
-x402 vendors require a funded wallet. Pyrimid vendors additionally require
-on-chain registration to obtain a `vendor_id` and per-product `pyrimid_product_id`.
+x402 vendors require a funded wallet and an entry in the payee allowlist in `adapters/x402-direct.js`, which is a code change and a package release.
 
 ```json
 {
@@ -214,9 +206,9 @@ All `call_affiliate_product` calls append to `logs/affiliate-telemetry.jsonl`:
   "vendor_id": "coinopai",
   "product_id": "kronos_signals",
   "amount_usd": 0.05,
-  "affiliate_id": "af_your_id",
-  "payment_type": "x402_pyrimid",
-  "commission_est_usd": 0.0099,
+  "affiliate_id": null,
+  "payment_type": "x402_direct",
+  "commission_est_usd": null,
   "status": "success",
   "tx_hash": "0x..."
 }
