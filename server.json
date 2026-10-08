@@ -22,13 +22,6 @@
           "isRequired": true,
           "isSecret": true,
           "format": "string"
-        },
-        {
-          "name": "PYRIMID_AFFILIATE_ID",
-          "description": "Your Pyrimid affiliate wallet address for on-chain commission splits (optional).",
-          "isRequired": false,
-          "isSecret": false,
-          "format": "string"
         }
       ]
     }
