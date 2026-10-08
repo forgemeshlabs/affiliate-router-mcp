@@ -9,7 +9,6 @@ local telemetry for attribution review.
 - MCP stdio server entrypoint: `index.js`
 - Vendor catalog: `registry.json`
 - Payment and referral adapters: `adapters/`
-- Local affiliate validation cache: `affiliate-cache.js`
 - Local telemetry writer: `telemetry.js`
 
 The registry is intentionally local. The server does not accept arbitrary vendor
@@ -19,7 +18,6 @@ URLs from tool callers; paid calls resolve against registered products only.
 
 Adapters implement a small routing contract:
 
-- `x402_pyrimid` for products that support affiliate-aware x402 settlement
 - `x402_direct` for standard x402 calls without affiliate split routing
 - `referral_link` for program-specific tracked links
 
