@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.14
+
+- Dependencies: lockfile refresh resolving the open npm advisories (zod via @x402/core, body-parser, fast-uri, qs, ip-address, @hono/node-server as applicable). No behavior change.
+
 ## 0.1.11 — 2026-09-23
 - Add free `list_tools`: plain fetch of `GET https://router.forgemesh.io/menu` (tool list with live prices; server-side `sponsored` field passed through untouched).
 - README: note the Pyrimid backend is offline; adapter falls back to `x402_direct`.
